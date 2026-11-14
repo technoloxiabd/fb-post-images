@@ -40,8 +40,8 @@ def build(spec):
             f'<div class="card"><div class="num">{i+1}</div><div><h3>{esc(it["title"])}</h3>' + (f'<p>{esc(it["text"])}</p>' if it.get("text") else "") + '</div></div>'
             for i, it in enumerate(items[:4])) + '</div>'
     else:
-        n = max(1, min(len(items), 5)); fs = {1: 36, 2: 36, 3: 34, 4: 32, 5: 29}[n]
-        pad = {1: 40, 2: 40, 3: 34, 4: 16, 5: 12}[n]
+        n = max(1, min(len(items), 5)); fs = {1: 36, 2: 36, 3: 34, 4: 32, 5: 28}[n]
+        pad = {1: 40, 2: 40, 3: 34, 4: 16, 5: 9}[n]
         body = f'<div class="list" style="font-size:{fs}px">' + "".join(
             f'<div class="row" style="padding-top:{pad}px;padding-bottom:{pad}px"><div class="num">{i+1}</div><div><h3>{esc(it["title"])}</h3>' + (f'<p>{esc(it["text"])}</p>' if it.get("text") else "") + '</div></div>'
             for i, it in enumerate(items[:5])) + '</div>'
@@ -57,18 +57,19 @@ body{{width:1080px;height:1080px;font-family:'Poppins','Hind Siliguri',sans-seri
 .band{{position:absolute;top:150px;left:0;right:0;height:330px;background:linear-gradient(135deg,{b["dark"]} 0%,{b["dark2"]} 100%);overflow:hidden}}
 .dot{{position:absolute;border-radius:50%;background:{b["accent2"]}}}
 .wrap{{position:relative;padding:150px 76px 56px;height:100%;display:flex;flex-direction:column}}
-.hero{{height:330px;display:flex;flex-direction:column;justify-content:center;padding-right:230px}}
+.hero{{flex:none;height:330px;display:flex;flex-direction:column;justify-content:center;padding-right:230px}}
 h1{{color:#fff;font-family:'Hind Siliguri','Poppins';font-weight:700;font-size:62px;line-height:1.22}}
 h1 em{{font-style:normal;color:{b["accent2"]}}}
 .sub{{margin-top:10px;color:#dfe6ee;font-family:'Hind Siliguri','Poppins';font-size:29px}}
 .grid{{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px}}
 .card{{background:#fff;border-radius:20px;padding:26px 28px;box-shadow:0 10px 30px rgba(20,30,45,.10);display:flex;gap:20px;align-items:flex-start;min-height:160px;border-bottom:5px solid {b["accent"]}}}
+.row .num{{width:52px;height:52px;font-size:25px}}
 .num{{flex:none;width:58px;height:58px;border-radius:50%;background:{b["accent"]};color:#fff;font-family:'Poppins';font-weight:700;font-size:28px;display:flex;align-items:center;justify-content:center}}
 .card:nth-child(even) .num,.row:nth-child(even) .num{{background:{b["dark"]}}}
 h3{{font-family:'Hind Siliguri','Poppins';font-size:1em;font-weight:700;line-height:1.25}}
 .card h3{{font-size:30px}}
 .card p,.row p{{margin-top:5px;font-family:'Hind Siliguri','Poppins';font-size:23px;font-weight:400;color:#5b6470;line-height:1.35}}
-.list{{margin-top:34px;display:flex;flex-direction:column;gap:16px}}
+.list{{margin-top:30px;display:flex;flex-direction:column;gap:13px}}
 .row{{background:#fff;border-radius:16px;padding:16px 24px;box-shadow:0 8px 24px rgba(20,30,45,.08);display:flex;gap:20px;align-items:center;border-left:6px solid {b["accent"]}}}
 .foot{{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:30px;border-top:2px solid #dfe3e8;padding-top:22px}}
 .cta{{font-size:25px;font-weight:600;font-family:'Poppins','Hind Siliguri'}}
