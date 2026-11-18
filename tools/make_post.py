@@ -6,7 +6,7 @@ Usage: python3 tools/make_post.py spec.json out.png
 spec.json:
 {
   "brand": "technoloxia" | "ornateit" | "cicio" | "cfde" | "vq",
-  "style": "split" | "dark" | "side" | "accent" | "frame" | "poster",   # six different layouts
+  "style": "split" | "dark" | "side" | "accent" | "frame" | "poster" | "timeline" | "bands" | "duo" | "tiles" | "spot",
   "tag": "Website Tips",                    # short label (<= 22 chars)
   "headline": "line one\n*highlighted words* line two",   # max 2 lines
   "sub": "one short line under the headline",
@@ -166,6 +166,105 @@ h1{{margin-top:40px;font-size:74px;line-height:1.18;font-weight:700}} h1 em{{col
         body = f'''<div class="hero"><div class="mo">{motif(M, A)}</div><div class="hi"><span class="tag">{tag}</span><h1>{head}</h1><div class="sub">{sub}</div></div></div>
 <div class="w"><div class="its">{items_html(items)}</div>
 <div class="foot"><div>{logo(h=int(b["logo_h"]*.8))}<div class="cta">{ft}</div></div><div class="web">{cbr}</div></div></div>'''
+
+    elif style == "timeline":
+        gap = {3: 40, 4: 26, 5: 14}.get(n, 26)
+        css = f"""body{{background:#fff;color:{D}}}
+.st{{position:absolute;left:0;top:0;bottom:0;width:20px;background:linear-gradient(180deg,{A},{D})}}
+.w{{position:relative;height:100%;padding:58px 76px 52px 96px;display:flex;flex-direction:column}}
+.top{{display:flex;justify-content:space-between;align-items:center}} .tag{{background:{A};color:#fff}}
+h1{{margin-top:38px;font-size:62px;line-height:1.2;font-weight:700}} h1 em{{color:{POP}}}
+.sub{{margin-top:10px;font-size:28px;color:#5b6470}}
+.its{{position:relative;margin:auto 0;display:flex;flex-direction:column;gap:{gap}px}}
+.its:before{{content:"";position:absolute;left:28px;top:30px;bottom:30px;width:4px;background:{A}40;border-radius:4px}}
+.it{{position:relative;display:flex;gap:28px;align-items:center}}
+.it b{{flex:none;width:60px;height:60px;border-radius:50%;background:{A};color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;border:5px solid #fff;box-shadow:0 0 0 3px {A}}}
+.it:nth-child(even) b{{background:{D};box-shadow:0 0 0 3px {D}}}
+.it h3{{font-size:32px;font-weight:700;line-height:1.25}} .it p{{font-size:24px;color:#5b6470;margin-top:2px}}
+.foot{{background:{A}1c;border-radius:20px;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;gap:24px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:20px;font-weight:400;color:#5b6470}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="mo" style="opacity:.10;left:45%;top:35%">{motif(M, A)}</div><div class="st"></div><div class="w"><div class="top">{logo()}<span class="tag">{tag}</span></div>
+<h1>{head}</h1><div class="sub">{sub}</div><div class="its">{items_html(items)}</div>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "bands":
+        css = f"""body{{background:#fff;color:{D};display:flex;flex-direction:column}}
+.hd{{position:relative;background:linear-gradient(120deg,{A} 0%,{D} 115%);color:#fff;padding:50px 72px 40px;overflow:hidden}}
+.hd>*{{position:relative}} .tag{{background:#fff;color:{A}}}
+h1{{margin-top:26px;font-size:60px;line-height:1.22;font-weight:700}} h1 em{{color:{A2}}}
+.sub{{margin-top:14px;font-size:28px;opacity:.95}}
+.its{{flex:1;display:flex;flex-direction:column}}
+.it{{flex:1;display:flex;flex-direction:row-reverse;justify-content:space-between;align-items:center;padding:0 72px;gap:30px}}
+.it:nth-child(even){{background:#f0f3f6}}
+.it b{{font-size:70px;line-height:1;font-weight:700;color:{A};opacity:.32}}
+.it h3{{font-size:32px;font-weight:700;line-height:1.25}} .it p{{font-size:24px;color:#5b6470;margin-top:3px}}
+.foot{{background:{D};color:#fff;padding:24px 72px;display:flex;justify-content:space-between;align-items:center;gap:24px}}
+.fl{{display:flex;align-items:center;gap:24px}} .cta{{font-size:22px;font-weight:600}} .cta small{{display:block;font-size:18px;font-weight:400;opacity:.8}}
+.web{{text-align:right;font-size:23px;font-weight:600;color:{A2};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="hd"><div class="mo" style="opacity:.28">{motif(M, "#ffffff")}</div><span class="tag">{tag}</span><h1>{head}</h1><div class="sub">{sub}</div></div>
+<div class="its">{items_html(items)}</div>
+<div class="foot"><div class="fl">{logo(pill=True, h=min(int(b["logo_h"]*.7), 54))}<div class="cta">{ft}<small>{fs}</small></div></div><div class="web">{cbr}</div></div>"""
+
+    elif style == "duo":
+        gap = {3: 26, 4: 18, 5: 12}.get(n, 18); pad = {3: 30, 4: 22, 5: 14}.get(n, 22)
+        css = f"""body{{background:#fff;color:{D}}}
+.l{{position:absolute;left:0;top:0;bottom:0;width:480px;padding:58px 40px 52px 60px;display:flex;flex-direction:column}}
+.tag{{border:2px solid {A};color:{A};align-self:flex-start;margin-top:54px}}
+h1{{margin-top:26px;font-size:52px;line-height:1.24;font-weight:700}} h1 em{{color:{POP}}}
+.sub{{margin-top:18px;font-size:26px;color:#5b6470;line-height:1.4}}
+.bt{{margin-top:auto}} .cta{{font-size:22px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;color:#5b6470}}
+.web{{margin-top:14px;font-size:24px;font-weight:700;color:{A};line-height:1.45}}
+.r{{position:absolute;left:480px;right:0;top:0;bottom:0;background:linear-gradient(160deg,{A} 0%,{D2} 140%);border-radius:70px 0 0 70px;padding:0 54px 0 50px;display:flex;flex-direction:column;justify-content:center;gap:{gap}px;overflow:hidden}}
+.it{{position:relative;background:#fff;border-radius:20px;padding:{pad}px 24px;display:flex;gap:20px;align-items:center;box-shadow:0 12px 30px rgba(0,0,0,.18)}}
+.it b{{flex:none;width:54px;height:54px;border-radius:16px;background:{D};color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center}}
+.it h3{{font-size:29px;font-weight:700;line-height:1.25}} .it p{{font-size:22px;color:#5b6470;margin-top:2px;line-height:1.3}}"""
+        body = f"""<div class="l">{logo()}<span class="tag">{tag}</span><h1>{head}</h1><div class="sub">{sub}</div><div class="bt"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>
+<div class="r"><div class="mo" style="opacity:.25">{motif(M, "#ffffff")}</div>{items_html(items)}</div>"""
+
+    elif style == "tiles":
+        css = f"""body{{background:#f3f5f8;color:{D}}}
+.w{{position:relative;height:100%;padding:56px 68px 50px;display:flex;flex-direction:column}}
+.top{{display:flex;justify-content:space-between;align-items:center}} .tag{{background:{D};color:#fff}}
+h1{{margin-top:32px;font-size:58px;line-height:1.22;font-weight:700}} h1 em{{color:{POP}}}
+.sub{{margin-top:8px;font-size:28px;color:#5b6470}}
+.its{{flex:1;margin:28px 0 26px;display:grid;grid-template-columns:1fr 1fr;gap:20px}}
+.it{{background:#fff;border-radius:26px;padding:26px 30px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 8px 24px rgba(20,30,45,.07);overflow:hidden;position:relative}}
+.it b{{font-size:58px;line-height:1;font-weight:700;color:{A};margin-bottom:12px}}
+.it h3{{font-size:31px;font-weight:700;line-height:1.25}} .it p{{font-size:23px;color:#5b6470;margin-top:4px;line-height:1.3}}
+.it:nth-child(1){{background:{A};color:#fff}} .it:nth-child(4){{background:{D};color:#fff}}
+.it:nth-child(1) b,.it:nth-child(4) b{{color:#fff;opacity:.85}} .it:nth-child(1) p,.it:nth-child(4) p{{color:#fff;opacity:.88}}
+.it:nth-child(3):last-child,.it:nth-child(5){{grid-column:1/-1}}
+.foot{{display:flex;justify-content:space-between;align-items:center;gap:24px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:20px;font-weight:400;color:#5b6470}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="w"><div class="top">{logo()}<span class="tag">{tag}</span></div>
+<h1>{head}</h1><div class="sub">{sub}</div><div class="its">{items_html(items)}</div>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "spot":
+        cols = "1fr" if n == 3 else "1fr 1fr"
+        css = f"""body{{background:#fff;color:{D}}}
+.c{{position:absolute;right:-150px;top:-170px;width:860px;height:860px;border-radius:50%;background:linear-gradient(150deg,{D2} 0%,{D} 100%);overflow:hidden}}
+.c2{{position:absolute;right:560px;top:500px;width:120px;height:120px;border-radius:50%;background:{A};opacity:.9}}
+.hh{{position:absolute;right:64px;top:120px;width:520px;color:#fff}}
+h1{{font-size:54px;line-height:1.24;font-weight:700}} h1 em{{color:{A2}}}
+.sub{{margin-top:14px;font-size:26px;color:#dfe6ee;line-height:1.35}}
+.lt{{position:absolute;left:64px;top:60px;width:330px}} .tag{{background:{A};color:#fff;margin-top:34px}}
+.w{{position:absolute;left:0;right:0;top:668px;bottom:0;padding:0 64px 46px;display:flex;flex-direction:column}}
+.its{{display:grid;grid-template-columns:{cols};gap:{18 if n == 3 else 30}px 34px;margin:auto 0}}
+.it{{display:flex;gap:16px;align-items:center}}
+.it:nth-child(5){{grid-column:1/-1}}
+.it b{{flex:none;width:54px;height:54px;border-radius:14px;background:{A};color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center}}
+.it h3{{font-size:{34 if n == 3 else 31}px;font-weight:700;line-height:1.25}} .it p{{font-size:22px;color:#5b6470;margin-top:1px;line-height:1.3}}
+.foot{{display:flex;justify-content:space-between;align-items:center;gap:24px;border-top:3px solid {A};padding-top:18px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;color:#5b6470}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="c"><div class="mo" style="opacity:.5">{motif(M, A)}</div></div><div class="c2"></div>
+<div class="lt"><img src="file://{logo_path}" style="display:block;max-width:290px;max-height:96px"><br><span class="tag">{tag}</span></div>
+<div class="hh"><h1>{head}</h1><div class="sub">{sub}</div></div>
+<div class="w"><div class="its">{items_html(items)}</div>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
 
     else:  # split
         cards = (n == 4 and all(it.get("text") for it in items))
