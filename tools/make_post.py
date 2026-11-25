@@ -6,7 +6,7 @@ Usage: python3 tools/make_post.py spec.json out.png
 spec.json:
 {
   "brand": "technoloxia" | "ornateit" | "cicio" | "cfde" | "vq",
-  "style": "split" | "dark" | "side" | "accent" | "frame" | "poster" | "timeline" | "bands" | "duo" | "tiles" | "spot",
+  "style": "split" | "dark" | "side" | "accent" | "frame" | "poster" | "timeline" | "bands" | "duo" | "tiles" | "spot" | "diag" | "bubbles" | "editorial" | "stack" | "invert" | "ticket",
   "tag": "Website Tips",                    # short label (<= 22 chars)
   "headline": "line one\n*highlighted words* line two",   # max 2 lines
   "sub": "one short line under the headline",
@@ -265,6 +265,136 @@ h1{{font-size:54px;line-height:1.24;font-weight:700}} h1 em{{color:{A2}}}
 <div class="hh"><h1>{head}</h1><div class="sub">{sub}</div></div>
 <div class="w"><div class="its">{items_html(items)}</div>
 <div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "diag":
+        cols = "1fr" if n == 3 else "1fr 1fr"
+        css = f"""body{{background:#fff;color:{D}}}
+.top{{position:absolute;left:68px;right:68px;top:52px;display:flex;justify-content:space-between;align-items:center}} .tag{{background:{A};color:#fff}}
+.bd{{position:absolute;left:-90px;right:-90px;top:238px;height:330px;transform:rotate(-5deg);background:linear-gradient(100deg,{D} 0%,{D2} 100%);overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.18)}}
+.bi{{position:relative;height:100%;padding:0 170px;display:flex;flex-direction:column;justify-content:center;color:#fff}}
+h1{{font-size:60px;line-height:1.2;font-weight:700}} h1 em{{color:{A2}}} .sub{{margin-top:8px;font-size:27px;color:#dfe6ee}}
+.ac{{position:absolute;left:-90px;right:-90px;top:556px;height:16px;transform:rotate(-5deg);background:{A}}}
+.w{{position:absolute;left:0;right:0;top:640px;bottom:0;padding:0 72px 48px;display:flex;flex-direction:column}}
+.its{{margin:auto 0;display:grid;grid-template-columns:{cols};gap:{20 if n == 3 else 26}px 40px}}
+.it{{display:flex;gap:18px;align-items:flex-start}}
+.it:nth-child(5){{grid-column:1/-1}}
+.it b{{flex:none;font-size:40px;line-height:1;font-style:italic;font-weight:700;color:{A};width:60px}}
+.it h3{{font-size:{33 if n == 3 else 29}px;font-weight:700;line-height:1.25}} .it p{{font-size:22px;color:#5b6470;margin-top:2px;line-height:1.3}}
+.foot{{display:flex;justify-content:space-between;align-items:center;gap:24px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;color:#5b6470}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="top">{logo()}<span class="tag">{tag}</span></div>
+<div class="bd"><div class="mo" style="opacity:.6">{motif(M, A)}</div><div class="bi"><h1>{head}</h1><div class="sub">{sub}</div></div></div><div class="ac"></div>
+<div class="w"><div class="its">{items_html(items)}</div><div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "bubbles":
+        sz = {3: 290, 4: 232, 5: 190}.get(n, 232); fz = {3: 30, 4: 25, 5: 21}.get(n, 25)
+        css = f"""body{{background:#f4f7fa;color:{D}}}
+.w{{position:relative;height:100%;padding:56px 64px 50px;display:flex;flex-direction:column}}
+.top{{display:flex;justify-content:space-between;align-items:center}} .tag{{background:{D};color:#fff}}
+h1{{margin-top:40px;font-size:60px;line-height:1.2;font-weight:700;text-align:center}} h1 em{{color:{POP}}}
+.sub{{margin-top:10px;font-size:28px;color:#5b6470;text-align:center}}
+.its{{margin:auto 0;display:flex;justify-content:center;align-items:flex-start}}
+.it{{width:{sz}px;margin:0 -6px;text-align:center;position:relative}}
+.it:nth-child(even){{margin-top:54px}}
+.it>div{{}} .it b{{position:absolute;left:50%;top:26px;transform:translateX(-50%);font-size:24px;color:#fff;opacity:.8}}
+.it h3{{width:{sz}px;height:{sz}px;border-radius:50%;background:{A};color:#fff;display:flex;align-items:center;justify-content:center;padding:36px 22px 20px;font-size:{fz}px;font-weight:700;line-height:1.25;box-shadow:0 14px 34px rgba(0,0,0,.16);border:8px solid #fff}}
+.it:nth-child(even) h3{{background:{D}}}
+.it p{{margin-top:14px;padding:0 10px;font-size:{22 if n < 5 else 19}px;color:#5b6470;line-height:1.3}}
+.foot{{background:#fff;border-radius:22px;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;gap:24px;box-shadow:0 8px 24px rgba(20,30,45,.07)}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;color:#5b6470}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="mo" style="opacity:.10">{motif(M, A)}</div><div class="w"><div class="top">{logo()}<span class="tag">{tag}</span></div>
+<h1>{head}</h1><div class="sub">{sub}</div><div class="its">{items_html(items)}</div>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "editorial":
+        pad = {3: 30, 4: 22, 5: 14}.get(n, 22)
+        css = f"""body{{background:#fbfaf7;color:{D}}}
+.sb{{position:absolute;left:0;top:0;bottom:0;width:116px;background:{D};display:flex;align-items:center;justify-content:center;overflow:hidden}}
+.sb span{{writing-mode:vertical-rl;transform:rotate(180deg);font-size:34px;font-weight:700;letter-spacing:6px;text-transform:uppercase;color:{A2};white-space:nowrap}}
+.sb i{{position:absolute;left:0;right:0;bottom:0;height:150px;background:{A}}}
+.w{{position:absolute;left:116px;right:0;top:0;bottom:0;padding:54px 64px 48px 60px;display:flex;flex-direction:column}}
+.lg{{display:flex;justify-content:flex-end}}
+.ov{{margin-top:26px;font-size:24px;font-weight:600;letter-spacing:1px;color:{A}}}
+h1{{margin-top:10px;font-size:68px;line-height:1.14;font-weight:700}} h1 em{{color:{A}}}
+.rl{{margin-top:26px;height:5px;background:{D}}}
+.its{{margin:auto 0;display:flex;flex-direction:column}}
+.it{{display:flex;gap:26px;align-items:baseline;padding:{pad}px 0;border-bottom:2px solid #ddd9d0}}
+.it:last-child{{border-bottom:none}}
+.it b{{flex:none;width:64px;font-size:30px;font-weight:600;color:#a8a294}}
+.it>div{{flex:1;display:flex;justify-content:space-between;align-items:baseline;gap:24px}}
+.it h3{{font-size:32px;font-weight:700;line-height:1.25}} .it p{{font-size:23px;color:#6a6558;text-align:right;line-height:1.3}}
+.foot{{border-top:5px solid {D};padding-top:18px;display:flex;justify-content:space-between;align-items:center;gap:24px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;color:#6a6558}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="sb"><i></i><span>{tag}</span></div><div class="w"><div class="lg">{logo()}</div>
+<div class="ov">{sub}</div><h1>{head}</h1><div class="rl"></div><div class="its">{items_html(items)}</div>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "stack":
+        gap = {3: 30, 4: 20, 5: 12}.get(n, 20); pad = {3: 28, 4: 20, 5: 13}.get(n, 20)
+        rot = [-1.8, 1.5, -1.2, 1.9, -1.5]; off = [0, 70, 24, 96, 40]
+        cards = "".join(f'<div class="it" style="transform:rotate({rot[i]}deg);margin-left:{off[i]}px"><b>{i+1}</b><div><h3>{esc(it["title"])}</h3>' + (f'<p>{esc(it["text"])}</p>' if it.get("text") else "") + '</div></div>' for i, it in enumerate(items))
+        css = f"""body{{background:linear-gradient(165deg,{A}30 0%,{A}0d 100%),#fff;color:{D}}}
+.w{{position:relative;height:100%;padding:56px 68px 50px;display:flex;flex-direction:column}}
+.top{{display:flex;justify-content:space-between;align-items:center}} .tag{{background:{A};color:#fff}}
+h1{{margin-top:34px;font-size:58px;line-height:1.2;font-weight:700}} h1 em{{color:{POP}}}
+.sub{{margin-top:8px;font-size:28px;color:#4b5563}}
+.its{{margin:auto 0;display:flex;flex-direction:column;gap:{gap}px;padding-left:20px}}
+.it{{position:relative;width:800px;background:#fff;border-radius:22px;padding:{pad}px 30px {pad}px 62px;box-shadow:0 14px 34px rgba(20,30,45,.14)}}
+.it b{{position:absolute;left:-24px;top:50%;margin-top:-34px;width:68px;height:68px;border-radius:50%;background:{D};color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;border:6px solid #fff}}
+.it:nth-child(odd) b{{background:{A}}}
+.it h3{{font-size:31px;font-weight:700;line-height:1.25}} .it p{{font-size:23px;color:#5b6470;margin-top:2px}}
+.foot{{display:flex;justify-content:space-between;align-items:center;gap:24px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;color:#4b5563}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{D};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="mo" style="opacity:.12">{motif(M, A)}</div><div class="w"><div class="top">{logo(pill=True, h=min(int(b["logo_h"]*.82), 68))}<span class="tag">{tag}</span></div>
+<h1>{head}</h1><div class="sub">{sub}</div><div class="its">{cards}</div>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div>"""
+
+    elif style == "invert":
+        cols = "1fr" if n == 3 else "1fr 1fr"
+        css = f"""body{{background:#fff;color:{D}}}
+.t{{position:absolute;left:0;right:0;top:0;height:560px;padding:52px 68px 0;display:flex;flex-direction:column}}
+.top{{display:flex;justify-content:space-between;align-items:center}} .tag{{background:{A};color:#fff}}
+.its{{margin:auto 0;display:grid;grid-template-columns:{cols};gap:{18 if n == 3 else 24}px 36px}}
+.it{{display:flex;gap:18px;align-items:center}}
+.it:nth-child(5){{grid-column:1/-1}}
+.it b{{flex:none;width:54px;height:54px;border-radius:50%;border:4px solid {A};color:{A};font-size:22px;display:flex;align-items:center;justify-content:center}}
+.it h3{{font-size:{33 if n == 3 else 28}px;font-weight:700;line-height:1.25}} .it p{{font-size:22px;color:#5b6470;margin-top:1px;line-height:1.3}}
+.bt{{position:absolute;left:0;right:0;top:560px;bottom:0;background:linear-gradient(150deg,{D} 0%,{D2} 100%);border-radius:70px 70px 0 0;color:#fff;overflow:hidden}}
+.bi{{position:relative;height:100%;padding:50px 68px 44px;display:flex;flex-direction:column}}
+.ov{{font-size:25px;font-weight:600;color:{A2};letter-spacing:.5px}}
+h1{{margin-top:10px;font-size:72px;line-height:1.16;font-weight:700}} h1 em{{color:{A2}}}
+.foot{{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:24px;border-top:2px solid rgba(255,255,255,.2);padding-top:18px}}
+.cta{{font-size:24px;font-weight:600}} .cta small{{display:block;font-size:19px;font-weight:400;opacity:.8}}
+.web{{text-align:right;font-size:24px;font-weight:700;color:{A2};line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="t"><div class="top">{logo()}<span class="tag">{tag}</span></div><div class="its">{items_html(items)}</div></div>
+<div class="bt"><div class="mo" style="opacity:.6">{motif(M, A)}</div><div class="bi"><div class="ov">{sub}</div><h1>{head}</h1>
+<div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div></div>"""
+
+    elif style == "ticket":
+        gap = {3: 26, 4: 16, 5: 9}.get(n, 16)
+        css = f"""body{{background:linear-gradient(150deg,{D} 0%,{D2} 100%);color:{D}}}
+.tk{{position:absolute;left:62px;right:62px;top:62px;bottom:62px;background:#fff;border-radius:36px;display:flex;flex-direction:column;box-shadow:0 26px 60px rgba(0,0,0,.35)}}
+.a{{padding:44px 52px 30px}} .top{{display:flex;justify-content:space-between;align-items:center}} .tag{{background:{A};color:#fff}}
+h1{{margin-top:30px;font-size:56px;line-height:1.2;font-weight:700}} h1 em{{color:{POP}}}
+.sub{{margin-top:8px;font-size:27px;color:#5b6470}}
+.cut{{position:relative;height:0;border-top:5px dashed #c5ccd6;margin:0 34px}}
+.cut:before,.cut:after{{content:"";position:absolute;top:-30px;width:56px;height:56px;border-radius:50%;background:{D}}}
+.cut:before{{left:-62px}} .cut:after{{right:-62px;background:{D2}}}
+.b{{flex:1;padding:26px 52px 36px;display:flex;flex-direction:column}}
+.its{{margin:auto 0;display:flex;flex-direction:column;gap:{gap}px}}
+.it{{display:flex;gap:22px;align-items:center}}
+.it b{{flex:none;width:58px;height:58px;border-radius:14px;background:{A}22;color:{A};font-size:24px;display:flex;align-items:center;justify-content:center}}
+.it h3{{font-size:31px;font-weight:700;line-height:1.25}} .it p{{font-size:23px;color:#5b6470;margin-top:1px}}
+.foot{{display:flex;justify-content:space-between;align-items:center;gap:24px;background:{A};color:#fff;border-radius:18px;padding:16px 26px}}
+.cta{{font-size:23px;font-weight:600}} .cta small{{display:block;font-size:18px;font-weight:400;opacity:.9}}
+.web{{text-align:right;font-size:23px;font-weight:700;line-height:1.4;white-space:nowrap}}"""
+        body = f"""<div class="mo" style="opacity:.7">{motif(M, A)}</div><div class="tk"><div class="a"><div class="top">{logo()}<span class="tag">{tag}</span></div>
+<h1>{head}</h1><div class="sub">{sub}</div></div><div class="cut"></div>
+<div class="b"><div class="its">{items_html(items)}</div><div class="foot"><div class="cta">{ft}<small>{fs}</small></div><div class="web">{cbr}</div></div></div></div>"""
 
     else:  # split
         cards = (n == 4 and all(it.get("text") for it in items))
